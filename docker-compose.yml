@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  go_app:
+    container_name: go-app
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: go_db  # Nome do serviço do banco de dados no Docker Compose
+    depends_on:
+      - go_db  # Garante que o serviço go_db seja iniciado primeiro
+
+  go_db:
+    container_name: go_db
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
